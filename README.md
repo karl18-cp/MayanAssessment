@@ -1,36 +1,67 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Fullstack Task Management Assessment
+
+A modern fullstack task management application built with Next.js for the frontend and Node.js route handlers for the backend. Tasks are persisted in a local JSON file at `data/tasks.json`.
 
 ## Getting Started
 
-First, run the development server:
+Install dependencies:
+
+```bash
+npm install
+```
+
+Run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Features
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Add tasks with title and description.
+- Mark tasks active or inactive.
+- Edit task title and description.
+- Delete tasks.
+- Search tasks by title.
+- Filter tasks by all, active, or inactive.
+- Combine search and status filters.
+- View collection stats and completion progress while filtering.
+- Use optimistic interactions for status changes and deletes.
+- Persist tasks in a local JSON data store.
+- Validate input and return structured API errors.
 
-## Learn More
+## API
 
-To learn more about Next.js, take a look at the following resources:
+| Method | Endpoint | Description |
+| --- | --- | --- |
+| `GET` | `/api/tasks?search=&filter=all` | List tasks with optional search/filter plus stats. |
+| `POST` | `/api/tasks` | Create a task. |
+| `GET` | `/api/tasks/:id` | Get one task. |
+| `PATCH` | `/api/tasks/:id` | Update title, description, or status. |
+| `DELETE` | `/api/tasks/:id` | Delete a task. |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Scripts
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npm run dev
+npm run lint
+npm run build
+```
 
-## Deploy on Vercel
+## Stack
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Next.js 16 App Router
+- React 19
+- TypeScript
+- Tailwind CSS
+- Node.js filesystem-backed persistence
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Implementation Notes
+
+- `lib/tasks.ts` owns persistence, validation, filtering, and aggregate stats.
+- `lib/task-api.ts` centralizes browser API calls so the UI component stays focused on state and rendering.
+- `app/components/task-manager.tsx` uses derived state, transitions, and optimistic updates for a more responsive interface.
+
+Inactive means the task has been completed. Active means it is still open.
